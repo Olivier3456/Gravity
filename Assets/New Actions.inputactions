@@ -1,0 +1,115 @@
+{
+    "version": 1,
+    "name": "New Actions",
+    "maps": [
+        {
+            "name": "Gamepad",
+            "id": "767d6a1e-404c-4687-9849-1a8ceb23e293",
+            "actions": [
+                {
+                    "name": "Left Stick Axis X",
+                    "type": "Value",
+                    "id": "d3596219-cb62-49ed-b7d0-05951a3f50a4",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Left Stick Axis Y",
+                    "type": "Value",
+                    "id": "5a5692f2-1b9f-4dfe-ba63-ddfa6fb1600b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Rotation Mode",
+                    "type": "Button",
+                    "id": "9dd4e4b8-297e-4889-be5b-5fa243025b68",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Left Trigger Axis",
+                    "type": "Value",
+                    "id": "b3e52419-de04-4423-b213-ad442ab156b4",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Trigger Axis",
+                    "type": "Button",
+                    "id": "519b059b-8241-45de-9aab-bc7ffce31855",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "bb525b08-7ccd-4dd7-a431-55850e80566d",
+                    "path": "<Gamepad>/leftStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Stick Axis X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "557e8571-1622-4d6b-9925-5e897ffee7dc",
+                    "path": "<Gamepad>/leftStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Stick Axis Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9ebba56c-9ce3-4496-b28e-bb06e2a404d1",
+                    "path": "<Gamepad>/{PrimaryAction}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation Mode",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ad2d5b9-618a-4311-a93c-afab255627f3",
+                    "path": "<Gamepad>/leftTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Left Trigger Axis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9282c22d-98e8-43a3-8acd-619006b5c544",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Trigger Axis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

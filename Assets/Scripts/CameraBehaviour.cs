@@ -18,7 +18,7 @@ public class CameraBehaviour : MonoBehaviour
         float mouseDeltaX = Mouse.current.delta.x.value;
         float mouseDeltaY = Mouse.current.delta.y.value;
 
-        Camera.main.transform.position += cameraPositionSpeed * new Vector3(mouseDeltaX, mouseDeltaY, 0f);
+        Camera.main.transform.position += cameraPositionSpeed * new Vector3(0f, mouseDeltaY, mouseDeltaX);
 
         Camera.main.orthographicSize += cameraScrollSpeed * Mouse.current.scroll.value.y;
         // Debug.Log(Mouse.current.scroll.value);

@@ -1,19 +1,42 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TestShip : MonoBehaviour, IGravityReceiver
 {
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float mass = 1f;
-
+    [SerializeField] private Camera mainCamera;
+    [SerializeField] private Image shipVisualImage;
+    [SerializeField] private float thrustersForce = 1f;
     [SerializeField] private Vector3 startForce;
 
 
-    [SerializeField] private float thrustersForce = 1f;
+    private RectTransform uiParent;
+
 
     private bool up;
     private bool down;
     private bool left;
     private bool right;
+
+
+    void Awake()
+    {
+        uiParent = shipVisualImage.rectTransform.parent as RectTransform;
+    }
+
+
+    void LateUpdate()
+    {
+        Vector3 screenPos = mainCamera.WorldToScreenPoint(transform.position);
+
+        // camera = null en Overlay ; sinon canvas.worldCamera
+        if (RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                uiParent, screenPos, null, out Vector2 localPos))
+        {
+            shipVisualImage.rectTransform.anchoredPosition = localPos;
+        }
+    }
 
 
     void Start()

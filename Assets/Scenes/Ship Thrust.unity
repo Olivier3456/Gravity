@@ -5848,9 +5848,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipGamepadInputs
   leftThumbstickX: {fileID: 1259971867996149173, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
   leftThumbstickY: {fileID: 6145238349825306499, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
+  rightThumbstickX: {fileID: -4465700773380219282, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
+  rightThumbstickY: {fileID: -5415581053114519323, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
   leftTrigger: {fileID: -2009182638482142919, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
   rightTrigger: {fileID: -59121803501213025, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
-  rotationMode: {fileID: 2578519028637654720, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
+  westButton: {fileID: 2324879494715631501, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
+  eastButton: {fileID: 5997184256307033235, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
 --- !u!114 &1003585642
 MonoBehaviour:
   m_ObjectHideFlags: 0

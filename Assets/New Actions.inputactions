@@ -16,9 +16,27 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "Right Stick Axis X",
+                    "type": "Value",
+                    "id": "ac2887fb-8c0f-47a8-965c-6da144a6f252",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
                     "name": "Left Stick Axis Y",
                     "type": "Value",
                     "id": "5a5692f2-1b9f-4dfe-ba63-ddfa6fb1600b",
+                    "expectedControlType": "Axis",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Right Stick Axis Y",
+                    "type": "Value",
+                    "id": "84e09baa-a36d-4211-8275-afc24f680a56",
                     "expectedControlType": "Axis",
                     "processors": "",
                     "interactions": "",
@@ -50,6 +68,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "West Button",
+                    "type": "Button",
+                    "id": "1979b7e7-8331-45bc-8801-0e4856662a3a",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "East Button",
+                    "type": "Button",
+                    "id": "e7d31cdf-f106-4688-bcaa-40187ea61e03",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -66,12 +102,34 @@
                 },
                 {
                     "name": "",
+                    "id": "8f8e83e0-3f36-450a-94f1-f2fc1188ba42",
+                    "path": "<Gamepad>/rightStick/x",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Stick Axis X",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "557e8571-1622-4d6b-9925-5e897ffee7dc",
                     "path": "<Gamepad>/leftStick/y",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Left Stick Axis Y",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "517655fb-d342-4983-b5f5-4d4dae47ef2f",
+                    "path": "<Gamepad>/rightStick/y",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Right Stick Axis Y",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -105,6 +163,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "Right Trigger Axis",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f4342aad-d522-45b3-96e3-2e373f4ae9fe",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "West Button",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "6028e5c8-9419-4f69-afd3-11de7ee8a30e",
+                    "path": "<Gamepad>/buttonEast",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "East Button",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

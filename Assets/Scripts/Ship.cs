@@ -95,6 +95,7 @@ public class Ship : MonoBehaviour
 
         ApplyPositionForces();
         ApplyRotationForces();
+        AutoRotationStabilization();
     }
 
 
@@ -111,13 +112,16 @@ public class Ship : MonoBehaviour
         rb.AddRelativeTorque(Vector3.left * ShipInputs.RotationAxisX * rotationThrustersForce, ForceMode.Force);
         rb.AddRelativeTorque(Vector3.back * ShipInputs.RotationAxisY * rotationThrustersForce, ForceMode.Force);
         rb.AddRelativeTorque(Vector3.down * ShipInputs.RotationAxisZ * rotationThrustersForce, ForceMode.Force);
+    }
 
+    private void AutoRotationStabilization()
+    {
         if (autoRotationStabilizer &&
-            ShipInputs.RotationAxisX == 0f &&
-            ShipInputs.RotationAxisY == 0f &&
-            ShipInputs.RotationAxisZ == 0f &&
-            rb.angularVelocity.magnitude > 0.000001f
-            )
+                    ShipInputs.RotationAxisX == 0f &&
+                    ShipInputs.RotationAxisY == 0f &&
+                    ShipInputs.RotationAxisZ == 0f &&
+                    rb.angularVelocity.magnitude > 0.000001f
+                    )
         {
             Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
             Vector3 localAngularDirection = localAngularVelocity.normalized;
@@ -131,7 +135,6 @@ public class Ship : MonoBehaviour
             rotationStabilizationStatus = 0f;
         }
     }
-
 
     void OnDrawGizmosSelected()
     {

@@ -15,14 +15,21 @@ public class ShipGamepadInputs : MonoBehaviour, IShipMovementInputs
     [SerializeField] private InputActionReference westButton;
     [SerializeField] private InputActionReference eastButton;
 
+    [Space(15)]
+    [SerializeField] private float buttonsPowerIncrementDuration = 0.5f;
+    [SerializeField] private float ButtonsPowerDecrementDuration = 0.1f;
+
 
     public float PositionAxisX { get; private set; }
     public float PositionAxisY { get; private set; }
     public float PositionAxisZ { get; private set; }
 
     public float RotationAxisX { get; private set; }
-    public float RotationAxisY { get; private set; }
+    public float RotationAxisY => rotationAxisYPositive - rotationAxisYNegative;
     public float RotationAxisZ { get; private set; }
+
+    private float rotationAxisYPositive;
+    private float rotationAxisYNegative;
 
 
     void OnEnable()
@@ -55,10 +62,36 @@ public class ShipGamepadInputs : MonoBehaviour, IShipMovementInputs
         PositionAxisZ = rightTriggerAxis - leftTriggerAxis;
 
         RotationAxisX = rightAxisY;
-        RotationAxisY = rightAxisX;
-        RotationAxisZ = westButton.action.ReadValue<float>() - eastButton.action.ReadValue<float>();
+        UpdateRotationAxisY();
+        RotationAxisZ = -rightAxisX;
+    }
+
+
+    private void UpdateRotationAxisY()
+    {
+        if (eastButton.action.IsPressed())
+        {
+            rotationAxisYPositive = Mathf.Clamp01(rotationAxisYPositive + (Time.deltaTime / buttonsPowerIncrementDuration));
+        }
+        else
+        {
+            rotationAxisYPositive = Mathf.Clamp01(rotationAxisYPositive - (Time.deltaTime / ButtonsPowerDecrementDuration));
+        }
+
+        if (westButton.action.IsPressed())
+        {
+            rotationAxisYNegative = Mathf.Clamp01(rotationAxisYNegative + (Time.deltaTime / buttonsPowerIncrementDuration));
+        }
+        else
+        {
+            rotationAxisYNegative = Mathf.Clamp01(rotationAxisYNegative - (Time.deltaTime / ButtonsPowerDecrementDuration));
+        }
     }
 }
+
+
+
+
 
 
 

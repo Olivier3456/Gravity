@@ -53,10 +53,12 @@ public class Ship : MonoBehaviour
         if (inputSource == InputSource.Keyboard)
         {
             ShipInputs = shipKeyboardInputs;
+            Destroy(shipGamepadInputs);
         }
         else
         {
             ShipInputs = shipGamepadInputs;
+            Destroy(shipKeyboardInputs);
         }
     }
 

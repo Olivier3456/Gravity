@@ -5789,7 +5789,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationStabilizationMagnitudeCurveDuration: 1
-  inputSource: 0
+  inputSource: 1
 --- !u!54 &1003585638
 Rigidbody:
   m_ObjectHideFlags: 0

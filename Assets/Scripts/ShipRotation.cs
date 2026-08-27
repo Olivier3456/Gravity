@@ -27,7 +27,7 @@ public class ShipRotation : MonoBehaviour
             return;
         }
 
-        if (ship.AutoRotationStabilizer)
+        if (ship.IsAutoRotationStabilizerActive)
         {
             AutoRotationStabilization();
         }
@@ -42,7 +42,7 @@ public class ShipRotation : MonoBehaviour
     {
         // (Comment by Claude Code) When the stabilizer is on it drives rotation itself (target angular velocity),
         // so raw torque must not be applied here or the two would fight each other.
-        if (ship.AutoRotationStabilizer)
+        if (ship.IsAutoRotationStabilizerActive)
         {
             return;
         }
@@ -57,7 +57,7 @@ public class ShipRotation : MonoBehaviour
     // (Claude Code)
     private void AutoRotationStabilization()
     {
-        if (!ship.AutoRotationStabilizer)
+        if (!ship.IsAutoRotationStabilizerActive)
         {
             return;
         }

@@ -10,19 +10,23 @@ public class Ship : MonoBehaviour
     [SerializeField] private Vector3 startForceRelative;
 
 
-    [SerializeField, Space(20)] private ShipKeyboardInputs shipKeyboardInputs;
+    [SerializeField, Space(15)] private ShipKeyboardInputs shipKeyboardInputs;
     [SerializeField] private ShipGamepadInputs shipGamepadInputs;
 
-    [SerializeField, Space(15)] private bool autoRotationStabilizer;
+    [SerializeField, Space(15)] private bool isAutoRotationStabilizerActive;
 
 
     public enum InputSource { Keyboard, Gamepad };
-    [SerializeField, Space(20)] private InputSource inputSource;
+    [SerializeField] private InputSource inputSource;
 
 
     public IShipMovementInputs ShipInputs { get; private set; }
     public Rigidbody Rigidbody => rb;
-    public bool AutoRotationStabilizer => autoRotationStabilizer;
+    public bool IsAutoRotationStabilizerActive => isAutoRotationStabilizerActive;
+    public void SetAutoRotation(bool isActive)
+    {
+        isAutoRotationStabilizerActive = isActive;
+    }
 
 
     public bool IsCrashed { get; private set; }

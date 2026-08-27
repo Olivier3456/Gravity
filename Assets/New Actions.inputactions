@@ -189,6 +189,45 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Auto Rotation Stabilizer",
+            "id": "bd5d1096-3a30-4b85-a73e-1b9747b924ec",
+            "actions": [
+                {
+                    "name": "Auto Rotation Stabilizer Activation",
+                    "type": "Button",
+                    "id": "18a5a83e-ebcc-4b14-91f1-870b102e7088",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "2c288865-42ef-4fb7-8114-42ceae7c08f9",
+                    "path": "<Gamepad>/buttonNorth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Auto Rotation Stabilizer Activation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "9d12ebd1-400a-44ff-ab13-c6db914d0adf",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Auto Rotation Stabilizer Activation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": []

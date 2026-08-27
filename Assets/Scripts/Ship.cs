@@ -9,20 +9,11 @@ public class Ship : MonoBehaviour
 
     [SerializeField] private Vector3 startForceRelative;
 
-    [SerializeField] private float positionThrustersForce = 1f;
-    [SerializeField] private float rotationThrustersForce = 1f;
 
     [SerializeField, Space(20)] private ShipKeyboardInputs shipKeyboardInputs;
     [SerializeField] private ShipGamepadInputs shipGamepadInputs;
 
     [SerializeField, Space(15)] private bool autoRotationStabilizer;
-    [SerializeField] private float maxRotationStabilizationMagnitude = 100f;
-    [SerializeField] private AnimationCurve rotationStabilizationMagnitudeCurve;
-    [SerializeField] private float rotationStabilizationMagnitudeCurveDuration = 1f;
-    // private float rotationStabilizationStatus;
-    // private float rotationStabilizationStatusX;
-    // private float rotationStabilizationStatusY;
-    // private float rotationStabilizationStatusZ;
 
 
     public enum InputSource { Keyboard, Gamepad };
@@ -32,10 +23,6 @@ public class Ship : MonoBehaviour
     public IShipMovementInputs ShipInputs { get; private set; }
     public Rigidbody Rigidbody => rb;
     public bool AutoRotationStabilizer => autoRotationStabilizer;
-    public float PositionThrustersForce => positionThrustersForce;
-    public float RotationThrustersForce => rotationThrustersForce;
-
-    public event EventHandler onForcesApplied;
 
 
     public bool IsCrashed { get; private set; }
@@ -92,47 +79,6 @@ public class Ship : MonoBehaviour
         {
             rb.AddRelativeForce(startForceRelative, ForceMode.Impulse);
         }
-    }
-
-
-    void FixedUpdate()
-    {
-        if (IsCrashed)
-        {
-            return;
-        }
-        if (IsDocked)
-        {
-            return;
-        }
-
-        ApplyPositionForces();
-        ApplyRotationForces();
-
-        onForcesApplied?.Invoke(this, EventArgs.Empty);
-    }
-
-
-    private void ApplyPositionForces()
-    {
-        rb.AddRelativeForce(Vector3.up * ShipInputs.PositionAxisY * positionThrustersForce, ForceMode.Force);
-        rb.AddRelativeForce(Vector3.forward * ShipInputs.PositionAxisZ * positionThrustersForce, ForceMode.Force);
-        rb.AddRelativeForce(Vector3.right * ShipInputs.PositionAxisX * positionThrustersForce, ForceMode.Force);
-    }
-
-
-    private void ApplyRotationForces()
-    {
-        // (Comment by Claude Code) When the stabilizer is on it drives rotation itself (target angular velocity),
-        // so raw torque must not be applied here or the two would fight each other.
-        if (autoRotationStabilizer)
-        {
-            return;
-        }
-
-        rb.AddRelativeTorque(Vector3.left * ShipInputs.RotationAxisX * rotationThrustersForce, ForceMode.Force);
-        rb.AddRelativeTorque(Vector3.back * ShipInputs.RotationAxisY * rotationThrustersForce, ForceMode.Force);
-        rb.AddRelativeTorque(Vector3.down * ShipInputs.RotationAxisZ * rotationThrustersForce, ForceMode.Force);
     }
 
 

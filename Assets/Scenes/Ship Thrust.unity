@@ -5612,7 +5612,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationStabilizationMagnitudeCurveDuration: 1
-  inputSource: 0
+  inputSource: 1
 --- !u!54 &1003585638
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5742,7 +5742,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipRotationStabilizer
   ship: {fileID: 1003585637}
   maxAngularVelocity: 1.5
-  responseGain: 1000
+  responseGain: 500
 --- !u!1 &1025830565
 GameObject:
   m_ObjectHideFlags: 0
@@ -7124,7 +7124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1578292686
 Transform:
   m_ObjectHideFlags: 0

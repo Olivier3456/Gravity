@@ -18,10 +18,10 @@ public class Ship : MonoBehaviour
     [SerializeField] private float maxRotationStabilizationMagnitude = 100f;
     [SerializeField] private AnimationCurve rotationStabilizationMagnitudeCurve;
     [SerializeField] private float rotationStabilizationMagnitudeCurveDuration = 1f;
-    // private float rotationStabilizationStatus;
-    private float rotationStabilizationStatusX;
-    private float rotationStabilizationStatusY;
-    private float rotationStabilizationStatusZ;
+    private float rotationStabilizationStatus;
+    // private float rotationStabilizationStatusX;
+    // private float rotationStabilizationStatusY;
+    // private float rotationStabilizationStatusZ;
 
 
     public enum InputSource { Keyboard, Gamepad };
@@ -127,53 +127,72 @@ public class Ship : MonoBehaviour
             return;
         }
 
+        // Vector3 stabilizationForce = Vector3.zero;
+        // Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
+        // Vector3 localAngularDirection = localAngularVelocity.normalized;
+
+        // // X axis:
+        // if (ShipInputs.RotationAxisX == 0f && Mathf.Abs(localAngularVelocity.x) > 0.000001f)
+        // {
+        //     stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusX) * -1 * new Vector3(localAngularDirection.x, 0f, 0f);
+        //     rotationStabilizationStatusX = Mathf.Clamp01(rotationStabilizationStatusX + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
+        //     Debug.Log("Stabilization X.");
+        // }
+        // else
+        // {
+        //     rotationStabilizationStatusX = 0f;
+        // }
+
+        // // Y axis:
+        // if (ShipInputs.RotationAxisY == 0f && Mathf.Abs(localAngularVelocity.y) > 0.000001f)
+        // {
+        //     stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusY) * -1 * new Vector3(0f, localAngularDirection.y, 0f);
+        //     rotationStabilizationStatusY = Mathf.Clamp01(rotationStabilizationStatusY + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
+        //     Debug.Log("Stabilization Y.");
+        // }
+        // else
+        // {
+        //     rotationStabilizationStatusY = 0f;
+        // }
+
+        // // Z axis:
+        // if (ShipInputs.RotationAxisZ == 0f && Mathf.Abs(localAngularVelocity.z) > 0.000001f)
+        // {
+        //     stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusZ) * -1 * new Vector3(0f, 0f, localAngularDirection.z);
+        //     rotationStabilizationStatusZ = Mathf.Clamp01(rotationStabilizationStatusZ + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
+        //     Debug.Log("Stabilization Z.");
+        // }
+        // else
+        // {
+        //     rotationStabilizationStatusZ = 0f;
+        // }
+
+        // // Apply force to rigidbody:
+        // if (stabilizationForce != Vector3.zero)
+        // {
+        //     rb.AddRelativeTorque(stabilizationForce);
+        // }
+
+
+        Vector3 stabilizationForce = Vector3.zero;
         Vector3 localAngularVelocity = rb.transform.InverseTransformDirection(rb.angularVelocity);
         Vector3 localAngularDirection = localAngularVelocity.normalized;
 
-        Vector3 stabilizationForce = Vector3.zero;
-
-        // X axis:
-        if (ShipInputs.RotationAxisX == 0f && Mathf.Abs(localAngularVelocity.x) > 0.000001f)
+        float threshold = 0.000001f;
+        if (Mathf.Abs(localAngularVelocity.x) > threshold)
         {
-            stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusX) * -1 * new Vector3(localAngularDirection.x, 0f, 0f);
-            rotationStabilizationStatusX = Mathf.Clamp01(rotationStabilizationStatusX + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
-            Debug.Log("Stabilization X.");
+            stabilizationForce += -1 * rotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisX)) * new Vector3(localAngularDirection.x, 0f, 0f);
         }
-        else
+        if (Mathf.Abs(localAngularVelocity.y) > threshold)
         {
-            rotationStabilizationStatusX = 0f;
+            stabilizationForce += -1 * rotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisY)) * new Vector3(0f, localAngularDirection.y, 0f);
         }
-
-        // Y axis:
-        if (ShipInputs.RotationAxisY == 0f && Mathf.Abs(localAngularVelocity.y) > 0.000001f)
+        if (Mathf.Abs(localAngularVelocity.z) > threshold)
         {
-            stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusY) * -1 * new Vector3(0f, localAngularDirection.y, 0f);
-            rotationStabilizationStatusY = Mathf.Clamp01(rotationStabilizationStatusY + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
-            Debug.Log("Stabilization Y.");
+            stabilizationForce += -1 * rotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisZ)) * new Vector3(0f, 0f, localAngularDirection.z);
         }
-        else
-        {
-            rotationStabilizationStatusY = 0f;
-        }
-
-        // Z axis:
-        if (ShipInputs.RotationAxisZ == 0f && Mathf.Abs(localAngularVelocity.z) > 0.000001f)
-        {
-            stabilizationForce += rotationThrustersForce * rotationStabilizationMagnitudeCurve.Evaluate(rotationStabilizationStatusZ) * -1 * new Vector3(0f, 0f, localAngularDirection.z);
-            rotationStabilizationStatusZ = Mathf.Clamp01(rotationStabilizationStatusZ + (Time.fixedDeltaTime / rotationStabilizationMagnitudeCurveDuration));
-            Debug.Log("Stabilization Z.");
-        }
-        else
-        {
-            rotationStabilizationStatusZ = 0f;
-        }
-
-        // Apply force to rigidbody:
-        if (stabilizationForce != Vector3.zero)
-        {
-            rb.AddRelativeTorque(stabilizationForce);
-        }
-
+        rb.AddRelativeTorque(stabilizationForce);
+        // Debug.Log("Stabilization force: " + stabilizationForce);
 
 
         // if (ShipInputs.RotationAxisX == 0f &&

@@ -5789,7 +5789,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   rotationStabilizationMagnitudeCurveDuration: 1
-  inputSource: 1
+  inputSource: 0
 --- !u!54 &1003585638
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -5854,6 +5854,8 @@ MonoBehaviour:
   rightTrigger: {fileID: -59121803501213025, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
   westButton: {fileID: 2324879494715631501, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
   eastButton: {fileID: 5997184256307033235, guid: a8b371b88d3fc714bbf5a2e5db1ac8b3, type: 3}
+  buttonsPowerIncrementDuration: 0.5
+  ButtonsPowerDecrementDuration: 0.1
 --- !u!114 &1003585642
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -5,6 +5,12 @@ public class ShipRotationStabilizer : MonoBehaviour
 {
     [SerializeField] private Ship ship;
 
+    // Angular velocity targeted at full stick deflection, in rad/s.
+    [SerializeField] private float maxAngularVelocity = 1.5f;
+    // Torque applied per rad/s of error. inertia / fixedDeltaTime converges in one step (very sharp);
+    // divide by 3 or 4 for a softer response.
+    [SerializeField] private float responseGain = 50f;
+
     private Rigidbody Rb => ship.Rigidbody;
     private float RotationThrustersForce => ship.RotationThrustersForce;
     private IShipMovementInputs ShipInputs => ship.ShipInputs;
@@ -24,6 +30,8 @@ public class ShipRotationStabilizer : MonoBehaviour
         AutoRotationStabilization();
     }
 
+
+    // (Claude Code)
     private void AutoRotationStabilization()
     {
         if (!ship.AutoRotationStabilizer)
@@ -31,32 +39,65 @@ public class ShipRotationStabilizer : MonoBehaviour
             return;
         }
 
-        Vector3 stabilizationForce = Vector3.zero;
         Vector3 localAngularVelocity = Rb.transform.InverseTransformDirection(Rb.angularVelocity);
-        Vector3 localAngularDirection = localAngularVelocity.normalized;
 
-        // Note: in Ship.ApplyRotationForces, RotationAxisY drives the local Z axis (roll)
-        // and RotationAxisZ drives the local Y axis (yaw), hence the Y/Z swap below.
-        float threshold = 0.000001f;
-        if (Mathf.Abs(localAngularVelocity.x) > threshold)
+        // Axis mapping, see Ship.ApplyRotationForces: RotationAxisX drives local -X (pitch),
+        // RotationAxisY drives local -Z (roll), RotationAxisZ drives local -Y (yaw).
+        Vector3 targetAngularVelocity = maxAngularVelocity * new Vector3(
+            -ShipInputs.RotationAxisX,
+            -ShipInputs.RotationAxisZ,
+            -ShipInputs.RotationAxisY);
+
+        Vector3 torque = Vector3.zero;
+        for (int i = 0; i < 3; i++)
         {
-            stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisX)) * new Vector3(localAngularDirection.x, 0f, 0f);
+            float deltaAngularVelocity = targetAngularVelocity[i] - localAngularVelocity[i];
+            torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -RotationThrustersForce, RotationThrustersForce);
         }
-        if (Mathf.Abs(localAngularVelocity.y) > threshold)
-        {
-            stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisZ)) * new Vector3(0f, localAngularDirection.y, 0f);
-        }
-        if (Mathf.Abs(localAngularVelocity.z) > threshold)
-        {
-            stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisY)) * new Vector3(0f, 0f, localAngularDirection.z);
-        }
-        Rb.AddRelativeTorque(stabilizationForce);
-        // Debug.Log("Stabilization force: " + stabilizationForce);
+
+        Rb.AddRelativeTorque(torque);
+        // Debug.Log("Stabilization torque: " + torque);
     }
+
+
 
     // =============================
     // Previous versions:
     // =============================
+
+    // (Commented by Claude Code) Torque-based version: input asks for torque, stabilizer spends the remaining
+    // thruster capacity (1 - |input|) against the rotation. Superseded because both
+    // terms cancel out at half stick. Needs the early return in
+    // Ship.ApplyRotationForces to be removed to work again.
+    // private void AutoRotationStabilization()
+    // {
+    //     if (!ship.AutoRotationStabilizer)
+    //     {
+    //         return;
+    //     }
+    //
+    //     Vector3 stabilizationForce = Vector3.zero;
+    //     Vector3 localAngularVelocity = Rb.transform.InverseTransformDirection(Rb.angularVelocity);
+    //     Vector3 localAngularDirection = localAngularVelocity.normalized;
+    //
+    //     // Note: in Ship.ApplyRotationForces, RotationAxisY drives the local Z axis (roll)
+    //     // and RotationAxisZ drives the local Y axis (yaw), hence the Y/Z swap below.
+    //     float threshold = 0.000001f;
+    //     if (Mathf.Abs(localAngularVelocity.x) > threshold)
+    //     {
+    //         stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisX)) * new Vector3(localAngularDirection.x, 0f, 0f);
+    //     }
+    //     if (Mathf.Abs(localAngularVelocity.y) > threshold)
+    //     {
+    //         stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisZ)) * new Vector3(0f, localAngularDirection.y, 0f);
+    //     }
+    //     if (Mathf.Abs(localAngularVelocity.z) > threshold)
+    //     {
+    //         stabilizationForce += -1 * RotationThrustersForce * (1 - Mathf.Abs(ShipInputs.RotationAxisY)) * new Vector3(0f, 0f, localAngularDirection.z);
+    //     }
+    //     Rb.AddRelativeTorque(stabilizationForce);
+    //     // Debug.Log("Stabilization force: " + stabilizationForce);
+    // }
 
     // private void AutoRotationStabilization()
     // {

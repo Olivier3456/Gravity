@@ -123,6 +123,13 @@ public class Ship : MonoBehaviour
 
     private void ApplyRotationForces()
     {
+        // (Comment by Claude Code) When the stabilizer is on it drives rotation itself (target angular velocity),
+        // so raw torque must not be applied here or the two would fight each other.
+        if (autoRotationStabilizer)
+        {
+            return;
+        }
+
         rb.AddRelativeTorque(Vector3.left * ShipInputs.RotationAxisX * rotationThrustersForce, ForceMode.Force);
         rb.AddRelativeTorque(Vector3.back * ShipInputs.RotationAxisY * rotationThrustersForce, ForceMode.Force);
         rb.AddRelativeTorque(Vector3.down * ShipInputs.RotationAxisZ * rotationThrustersForce, ForceMode.Force);

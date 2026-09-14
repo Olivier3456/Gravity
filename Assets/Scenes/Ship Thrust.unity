@@ -6058,9 +6058,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipTranslation
   ship: {fileID: 1003585637}
-  positionThrustersForce: 100
+  positionThrustersForce: 50
   maxLinearVelocity: 10
-  responseGainPerTon: 10
+  responseGainPerKilogram: 10
 --- !u!114 &1003585648
 MonoBehaviour:
   m_ObjectHideFlags: 0

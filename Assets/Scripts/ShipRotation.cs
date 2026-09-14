@@ -21,6 +21,10 @@ public class ShipRotation : MonoBehaviour
         -Inputs.RotationAxisZ,
         -Inputs.RotationAxisY);
 
+    public Vector3 CurrentTorque { get; private set; }
+
+    public float ThrustersForce => rotationThrustersForce;
+
 
     void FixedUpdate()
     {
@@ -65,9 +69,10 @@ public class ShipRotation : MonoBehaviour
             torque[i] = inputs[i] * rotationThrustersForce;
         }
 
+        CurrentTorque = torque;
+
         ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }
-
 
 
     private void AutoRotationStabilization()
@@ -81,6 +86,8 @@ public class ShipRotation : MonoBehaviour
             float deltaAngularVelocity = targetAngularVelocity[i] - localAngularVelocity[i];
             torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -rotationThrustersForce, rotationThrustersForce);
         }
+
+        CurrentTorque = torque;
 
         ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }

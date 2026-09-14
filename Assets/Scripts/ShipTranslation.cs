@@ -25,6 +25,10 @@ public class ShipTranslation : MonoBehaviour
         Inputs.PositionAxisY,
         Inputs.PositionAxisZ);
 
+    public Vector3 CurrentForce { get; private set; }
+
+    public float ThrustersForce => positionThrustersForce;
+
 
     void FixedUpdate()
     {
@@ -71,6 +75,8 @@ public class ShipTranslation : MonoBehaviour
             force[i] = inputs[i] * positionThrustersForce;
         }
 
+        CurrentForce = force;
+
         ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);
     }
 
@@ -87,6 +93,8 @@ public class ShipTranslation : MonoBehaviour
             float deltaVelocity = targetLocalVelocity[i] - localVelocity[i];
             force[i] = Mathf.Clamp(deltaVelocity * gain, -positionThrustersForce, positionThrustersForce);
         }
+
+        CurrentForce = force;
 
         ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);
     }

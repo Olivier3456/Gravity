@@ -4770,6 +4770,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipAudio
   ship: {fileID: 1003585637}
+  shipTranslation: {fileID: 1003585647}
+  shipRotation: {fileID: 1003585646}
   audioSourceRight: {fileID: 1088758431}
   audioSourceLeft: {fileID: 1105951022}
   audioSourceUp: {fileID: 1799455083}
@@ -6042,9 +6044,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipRotation
   ship: {fileID: 1003585637}
+  rotationThrustersForce: 50
   maxAngularVelocity: 1.5
   responseGain: 500
-  rotationThrustersForce: 50
+  NormalizedCurrentForce: {x: 0, y: 0, z: 0}
 --- !u!114 &1003585647
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6061,6 +6064,7 @@ MonoBehaviour:
   positionThrustersForce: 50
   maxLinearVelocity: 10
   responseGainPerKilogram: 10
+  NormalizedCurrentForce: {x: 0, y: 0, z: 0}
 --- !u!114 &1003585648
 MonoBehaviour:
   m_ObjectHideFlags: 0

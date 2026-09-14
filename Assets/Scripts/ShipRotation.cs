@@ -3,17 +3,23 @@ using UnityEngine;
 public class ShipRotation : MonoBehaviour
 {
     [SerializeField] private Ship ship;
+    private IShipMovementInputs Inputs => ship.ShipInputs;
+    [SerializeField] private float rotationThrustersForce = 50f;
 
-    // Angular velocity targeted at full stick deflection, in rad/s.
+    // Angular velocity targeted at full stick deflection when the stabilizer is on, in rad/s.
+    // Doubles as the rate governor's cap when it is off, so both modes top out identically.
     [SerializeField] private float maxAngularVelocity = 1.5f;
 
     // Torque applied per rad/s of error. inertia / fixedDeltaTime converges in one step (very sharp);
     // divide by 3 or 4 for a softer response.
     [SerializeField] private float responseGain = 50f;
 
-    private IShipMovementInputs Inputs => ship.ShipInputs;
-
-    [SerializeField] private float rotationThrustersForce = 50f;
+    // Both modes share the same axis mapping and the same maximum torque: RotationAxisX drives
+    // local -X (pitch), RotationAxisY drives local -Z (roll), RotationAxisZ drives local -Y (yaw).
+    private Vector3 LocalInputs => new Vector3(
+        -Inputs.RotationAxisX,
+        -Inputs.RotationAxisZ,
+        -Inputs.RotationAxisY);
 
 
     void FixedUpdate()
@@ -40,36 +46,34 @@ public class ShipRotation : MonoBehaviour
 
     private void ApplyRotationForces()
     {
-        // (Comment by Claude Code) When the stabilizer is on it drives rotation itself (target angular velocity),
-        // so raw torque must not be applied here or the two would fight each other.
-        if (ship.IsAutoRotationStabilizerActive)
+        Vector3 inputs = LocalInputs;
+        Vector3 localAngularVelocity = ship.Rigidbody.transform.InverseTransformDirection(ship.Rigidbody.angularVelocity);
+
+        Vector3 torque = Vector3.zero;
+        for (int i = 0; i < 3; i++)
         {
-            return;
+            // Rate governor: same cap as the stabilizer, but enforced by cutting the thruster
+            // instead of braking, so this mode never applies a torque the pilot did not command.
+            // Torque opposing the current rotation always goes through, so slowing down and
+            // reversing stay possible above the cap.
+            bool spinningUpAwayFromZero = inputs[i] * localAngularVelocity[i] > 0f;
+            if (spinningUpAwayFromZero && Mathf.Abs(localAngularVelocity[i]) >= maxAngularVelocity)
+            {
+                continue;
+            }
+
+            torque[i] = inputs[i] * rotationThrustersForce;
         }
 
-        ship.Rigidbody.AddRelativeTorque(Vector3.left * Inputs.RotationAxisX * rotationThrustersForce, ForceMode.Force);
-        ship.Rigidbody.AddRelativeTorque(Vector3.back * Inputs.RotationAxisY * rotationThrustersForce, ForceMode.Force);
-        ship.Rigidbody.AddRelativeTorque(Vector3.down * Inputs.RotationAxisZ * rotationThrustersForce, ForceMode.Force);
+        ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }
 
 
 
-    // (Claude Code)
     private void AutoRotationStabilization()
     {
-        if (!ship.IsAutoRotationStabilizerActive)
-        {
-            return;
-        }
-
         Vector3 localAngularVelocity = ship.Rigidbody.transform.InverseTransformDirection(ship.Rigidbody.angularVelocity);
-
-        // Axis mapping, see Ship.ApplyRotationForces: RotationAxisX drives local -X (pitch),
-        // RotationAxisY drives local -Z (roll), RotationAxisZ drives local -Y (yaw).
-        Vector3 targetAngularVelocity = maxAngularVelocity * new Vector3(
-            -Inputs.RotationAxisX,
-            -Inputs.RotationAxisZ,
-            -Inputs.RotationAxisY);
+        Vector3 targetAngularVelocity = LocalInputs * maxAngularVelocity;
 
         Vector3 torque = Vector3.zero;
         for (int i = 0; i < 3; i++)
@@ -78,7 +82,7 @@ public class ShipRotation : MonoBehaviour
             torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -rotationThrustersForce, rotationThrustersForce);
         }
 
-        ship.Rigidbody.AddRelativeTorque(torque);
+        ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }
 
 

@@ -191,13 +191,22 @@
             ]
         },
         {
-            "name": "Auto Rotation Stabilizer",
+            "name": "Auto Stabilizer",
             "id": "bd5d1096-3a30-4b85-a73e-1b9747b924ec",
             "actions": [
                 {
-                    "name": "Auto Rotation Stabilizer Activation",
+                    "name": "Rotation",
                     "type": "Button",
                     "id": "18a5a83e-ebcc-4b14-91f1-870b102e7088",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Position",
+                    "type": "Button",
+                    "id": "a877197f-ab45-4e5f-8ca2-8a34d3e05199",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
@@ -212,18 +221,40 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Auto Rotation Stabilizer Activation",
+                    "action": "Rotation",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
                 {
                     "name": "",
                     "id": "9d12ebd1-400a-44ff-ab13-c6db914d0adf",
-                    "path": "<Keyboard>/e",
+                    "path": "<Keyboard>/r",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Auto Rotation Stabilizer Activation",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1caaac1d-c830-4f58-8c87-b23683635924",
+                    "path": "<Gamepad>/buttonSouth",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c74df05c-24cb-40c9-b010-21f813c2542c",
+                    "path": "<Keyboard>/t",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Position",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

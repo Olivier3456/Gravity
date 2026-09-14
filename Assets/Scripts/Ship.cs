@@ -14,6 +14,7 @@ public class Ship : MonoBehaviour
     [SerializeField] private ShipGamepadInputs shipGamepadInputs;
 
     [SerializeField, Space(15)] private bool isAutoRotationStabilizerActive;
+    [SerializeField] private bool isAutoPositionStabilizerActive;
 
 
     public enum InputSource { Keyboard, Gamepad };
@@ -23,9 +24,14 @@ public class Ship : MonoBehaviour
     public IShipMovementInputs ShipInputs { get; private set; }
     public Rigidbody Rigidbody => rb;
     public bool IsAutoRotationStabilizerActive => isAutoRotationStabilizerActive;
+    public bool IsAutoPositionStabilizerActive => isAutoPositionStabilizerActive;
     public void SetAutoRotation(bool isActive)
     {
         isAutoRotationStabilizerActive = isActive;
+    }
+    public void SetAutoPosition(bool isActive)
+    {
+        isAutoPositionStabilizerActive = isActive;
     }
 
 

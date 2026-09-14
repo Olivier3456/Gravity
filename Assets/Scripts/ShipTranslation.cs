@@ -6,21 +6,24 @@ public class ShipTranslation : MonoBehaviour
     private IShipMovementInputs Inputs => ship.ShipInputs;
     [SerializeField] private float positionThrustersForce = 100f;
 
-    // Linear velocity targeted at full stick deflection, in m/s.
+    // Linear velocity targeted at full stick deflection when the stabilizer is on, in m/s.
+    // Doubles as the speed governor's cap when it is off, so both modes top out identically.
     [SerializeField] private float maxLinearVelocity = 10f;
 
-    // Force applied per m/s of error. mass / fixedDeltaTime converges in one step (very sharp);
-    // divide by 3 or 4 for a softer response.
-    [SerializeField] private float responseGainPerTon = 15f;
+    // Force applied per m/s of error, per kilogram of ship. 1 / fixedDeltaTime (50) converges
+    // in one step (very sharp); a fifth of that gives a softer response.
+    [SerializeField] private float responseGainPerKilogram = 10f;
 
+    // Read live rather than cached in Start(): Ship.Start() assigns the Rigidbody mass, and the
+    // execution order between the two Start() calls is undefined.
+    private float ResponseGain => responseGainPerKilogram * ship.Rigidbody.mass;
 
-    private float responseGain;
-
-
-    private void Start()
-    {
-        responseGain = responseGainPerTon * ship.Rigidbody.mass;
-    }
+    // Both modes share the same axis mapping and the same maximum force: PositionAxisX drives
+    // local X (right), PositionAxisY drives local Y (up), PositionAxisZ drives local Z (forward).
+    private Vector3 LocalInputs => new Vector3(
+        Inputs.PositionAxisX,
+        Inputs.PositionAxisY,
+        Inputs.PositionAxisZ);
 
 
     void FixedUpdate()
@@ -36,40 +39,53 @@ public class ShipTranslation : MonoBehaviour
 
         if (ship.IsAutoPositionStabilizerActive)
         {
-            AutoPositionStabilization();
+            // Velocity command: the stick asks for a speed, released means stop.
+            ApplyVelocityHoldForces();
         }
         else
         {
-            ApplyPositionForces();
+            // Thrust command: the stick asks for an acceleration, acquired velocity is kept.
+            ApplyDirectThrustForces();
         }
     }
 
 
-    private void ApplyPositionForces()
+    private void ApplyDirectThrustForces()
     {
-        ship.Rigidbody.AddRelativeForce(Vector3.up * Inputs.PositionAxisY * positionThrustersForce, ForceMode.Force);
-        ship.Rigidbody.AddRelativeForce(Vector3.forward * Inputs.PositionAxisZ * positionThrustersForce, ForceMode.Force);
-        ship.Rigidbody.AddRelativeForce(Vector3.right * Inputs.PositionAxisX * positionThrustersForce, ForceMode.Force);
+        Vector3 inputs = LocalInputs;
+        Vector3 localVelocity = ship.Rigidbody.transform.InverseTransformDirection(ship.Rigidbody.linearVelocity);
+
+        Vector3 force = Vector3.zero;
+        for (int i = 0; i < 3; i++)
+        {
+            // Speed governor: same cap as the stabilizer, but enforced by cutting the thruster
+            // instead of braking, so this mode never applies a force the pilot did not command.
+            // Thrust opposing the current velocity always goes through, so slowing down and
+            // reversing stay possible above the cap.
+            bool thrustingAwayFromZero = inputs[i] * localVelocity[i] > 0f;
+            if (thrustingAwayFromZero && Mathf.Abs(localVelocity[i]) >= maxLinearVelocity)
+            {
+                continue;
+            }
+
+            force[i] = inputs[i] * positionThrustersForce;
+        }
+
+        ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);
     }
 
 
-    // (Claude)
-    private void AutoPositionStabilization()
+    private void ApplyVelocityHoldForces()
     {
         Vector3 localVelocity = ship.Rigidbody.transform.InverseTransformDirection(ship.Rigidbody.linearVelocity);
-
-        // Axis mapping, see ApplyPositionForces: PositionAxisX drives local X (right),
-        // PositionAxisY drives local Y (up), PositionAxisZ drives local Z (forward).
-        Vector3 targetLocalVelocity = maxLinearVelocity * new Vector3(
-            Inputs.PositionAxisX,
-            Inputs.PositionAxisY,
-            Inputs.PositionAxisZ);
+        Vector3 targetLocalVelocity = LocalInputs * maxLinearVelocity;
+        float gain = ResponseGain;
 
         Vector3 force = Vector3.zero;
         for (int i = 0; i < 3; i++)
         {
             float deltaVelocity = targetLocalVelocity[i] - localVelocity[i];
-            force[i] = Mathf.Clamp(deltaVelocity * responseGain, -positionThrustersForce, positionThrustersForce);
+            force[i] = Mathf.Clamp(deltaVelocity * gain, -positionThrustersForce, positionThrustersForce);
         }
 
         ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);

@@ -33,6 +33,8 @@ public class ShipTranslation : MonoBehaviour
 
     public float ThrustersForce => positionThrustersForce;
 
+    public float CurrentSpeed => ship.Rigidbody.linearVelocity.magnitude;
+
 
     void FixedUpdate()
     {

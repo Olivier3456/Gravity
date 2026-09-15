@@ -41,19 +41,19 @@ public class ShipAudio : MonoBehaviour
         // }
 
 
-        audioSourceRight.volume = Mathf.Clamp01(-shipTranslation.CurrentForce.x / shipTranslation.ThrustersForce);
-        audioSourceLeft.volume = Mathf.Clamp01(shipTranslation.CurrentForce.x / shipTranslation.ThrustersForce);
+        audioSourceRight.volume = Mathf.Clamp01(-shipTranslation.CurrentForceNormalized.x);
+        audioSourceLeft.volume = Mathf.Clamp01(shipTranslation.CurrentForceNormalized.x);
 
-        audioSourceUp.volume = Mathf.Clamp01(-shipTranslation.CurrentForce.y / shipTranslation.ThrustersForce);
-        audioSourceDown.volume = Mathf.Clamp01(shipTranslation.CurrentForce.y);
+        audioSourceUp.volume = Mathf.Clamp01(-shipTranslation.CurrentForceNormalized.y);
+        audioSourceDown.volume = Mathf.Clamp01(shipTranslation.CurrentForceNormalized.y);
 
-        audioSourceForward.volume = Mathf.Clamp01(-shipTranslation.CurrentForce.z / shipTranslation.ThrustersForce);
-        audioSourceBackward.volume = Mathf.Clamp01(shipTranslation.CurrentForce.z / shipTranslation.ThrustersForce);
+        audioSourceForward.volume = Mathf.Clamp01(-shipTranslation.CurrentForceNormalized.z);
+        audioSourceBackward.volume = Mathf.Clamp01(shipTranslation.CurrentForceNormalized.z);
 
         audioSourceRotation.volume = Mathf.Max(
-                                                Mathf.Abs(shipRotation.CurrentTorque.x / shipRotation.ThrustersForce),
-                                                Mathf.Abs(shipRotation.CurrentTorque.y / shipRotation.ThrustersForce),
-                                                Mathf.Abs(shipRotation.CurrentTorque.z / shipRotation.ThrustersForce)
+                                                Mathf.Abs(shipRotation.CurrentTorqueNormalized.x),
+                                                Mathf.Abs(shipRotation.CurrentTorqueNormalized.y),
+                                                Mathf.Abs(shipRotation.CurrentTorqueNormalized.z)
                                                 );
     }
 }

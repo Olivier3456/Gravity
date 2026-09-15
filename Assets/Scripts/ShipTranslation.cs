@@ -3,6 +3,7 @@ using UnityEngine;
 public class ShipTranslation : MonoBehaviour
 {
     [SerializeField] private Ship ship;
+    [SerializeField] private ShipFuelManager shipFuelManager;
     private IShipMovementInputs Inputs => ship.ShipInputs;
     [SerializeField] private float positionThrustersForce = 100f;
 
@@ -25,7 +26,10 @@ public class ShipTranslation : MonoBehaviour
         Inputs.PositionAxisY,
         Inputs.PositionAxisZ);
 
-    public Vector3 CurrentForce { get; private set; }
+    // public Vector3 CurrentForce { get; private set; }
+
+    private Vector3 currentForceNormalized;
+    public Vector3 CurrentForceNormalized => currentForceNormalized;
 
     public float ThrustersForce => positionThrustersForce;
 
@@ -37,6 +41,10 @@ public class ShipTranslation : MonoBehaviour
             return;
         }
         if (ship.IsDocked)
+        {
+            return;
+        }
+        if (!shipFuelManager.HasFuel)
         {
             return;
         }
@@ -73,9 +81,10 @@ public class ShipTranslation : MonoBehaviour
             }
 
             force[i] = inputs[i] * positionThrustersForce;
+            currentForceNormalized[i] = inputs[i];
         }
 
-        CurrentForce = force;
+        // CurrentForce = force;
 
         ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);
     }
@@ -92,9 +101,10 @@ public class ShipTranslation : MonoBehaviour
         {
             float deltaVelocity = targetLocalVelocity[i] - localVelocity[i];
             force[i] = Mathf.Clamp(deltaVelocity * gain, -positionThrustersForce, positionThrustersForce);
+            currentForceNormalized[i] = force[i] / positionThrustersForce;
         }
 
-        CurrentForce = force;
+        // CurrentForce = force;
 
         ship.Rigidbody.AddRelativeForce(force, ForceMode.Force);
     }

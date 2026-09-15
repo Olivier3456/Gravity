@@ -3,6 +3,7 @@ using UnityEngine;
 public class ShipRotation : MonoBehaviour
 {
     [SerializeField] private Ship ship;
+    [SerializeField] private ShipFuelManager shipFuelManager;
     private IShipMovementInputs Inputs => ship.ShipInputs;
     [SerializeField] private float rotationThrustersForce = 50f;
 
@@ -21,7 +22,9 @@ public class ShipRotation : MonoBehaviour
         -Inputs.RotationAxisZ,
         -Inputs.RotationAxisY);
 
-    public Vector3 CurrentTorque { get; private set; }
+    // public Vector3 CurrentTorque { get; private set; }
+    private Vector3 currentTorqueNormalized;
+    public Vector3 CurrentTorqueNormalized => currentTorqueNormalized;
 
     public float ThrustersForce => rotationThrustersForce;
 
@@ -33,6 +36,10 @@ public class ShipRotation : MonoBehaviour
             return;
         }
         if (ship.IsDocked)
+        {
+            return;
+        }
+        if (!shipFuelManager.HasFuel)
         {
             return;
         }
@@ -67,9 +74,10 @@ public class ShipRotation : MonoBehaviour
             }
 
             torque[i] = inputs[i] * rotationThrustersForce;
+            currentTorqueNormalized[i] = inputs[i];
         }
 
-        CurrentTorque = torque;
+        // CurrentTorque = torque;
 
         ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }
@@ -85,9 +93,10 @@ public class ShipRotation : MonoBehaviour
         {
             float deltaAngularVelocity = targetAngularVelocity[i] - localAngularVelocity[i];
             torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -rotationThrustersForce, rotationThrustersForce);
+            currentTorqueNormalized[i] = torque[i] / rotationThrustersForce;
         }
 
-        CurrentTorque = torque;
+        // CurrentTorque = torque;
 
         ship.Rigidbody.AddRelativeTorque(torque, ForceMode.Force);
     }

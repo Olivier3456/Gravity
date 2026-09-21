@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,8 +15,9 @@ public class ShipFuelManager : MonoBehaviour
     [SerializeField] private ShipRotation shipRotation;
 
 
-    [Space(10)]
+    [Header("UI")]
     [SerializeField] private Image fuelGaugeImage;
+    [SerializeField] private TextMeshProUGUI fuelConsumptionTmp;
 
     public float FuelCurrentAmount { get; private set; }
 
@@ -60,8 +62,9 @@ public class ShipFuelManager : MonoBehaviour
                                           + Mathf.Abs(shipRotation.CurrentTorqueNormalized.y * rotationThrustersConsumption * Time.deltaTime)
                                           + Mathf.Abs(shipRotation.CurrentTorqueNormalized.z * rotationThrustersConsumption * Time.deltaTime);
 
-        FuelCurrentAmount -= currentFuelSpentForPosition + currentFuelSpentForRotation;
+        float fuelConsumption = currentFuelSpentForPosition + currentFuelSpentForRotation;
 
+        FuelCurrentAmount -= fuelConsumption;
         FuelCurrentAmount = Mathf.Max(0f, FuelCurrentAmount);
 
         fuelGaugeImage.fillAmount = FuelCurrentAmount / fuelMaxAmount;
@@ -70,5 +73,9 @@ public class ShipFuelManager : MonoBehaviour
         {
             Debug.Log("Out of fuel!");
         }
+
+        float fuelConsumptionDisplayFactor = 1000f;
+        float fuelConsumptionDisplayed = fuelConsumption * fuelConsumptionDisplayFactor;
+        fuelConsumptionTmp.SetText($"{fuelConsumptionDisplayed.ToString("00.00")} g/s");
     }
 }

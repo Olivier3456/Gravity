@@ -277,12 +277,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DockingTimeManager
   targetTime:
     hours: 12
-    minutes: 46
-    seconds: 58
+    minutes: 30
+    seconds: 2
   targetDuration:
     hours: 0
     minutes: 2
-    seconds: 2
+    seconds: 30
   currentTimeTmp: {fileID: 1862701714}
   targetTimeTmp: {fileID: 1871980415}
 --- !u!4 &393566364

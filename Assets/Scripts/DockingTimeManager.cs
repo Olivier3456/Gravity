@@ -13,7 +13,6 @@ public class DockingTimeManager : MonoBehaviour
 
     private DockingTime currentDockingTime = new();
 
-    private DockingTime startDockingTime;
 
 
     [Serializable]
@@ -23,49 +22,45 @@ public class DockingTimeManager : MonoBehaviour
         [SerializeField, Range(0, 59)] private int minutes;
         [SerializeField, Range(0, 59)] private int seconds;
 
-        // public int Hours => hours;
-        // public int Minutes => minutes;
+        public int Hours => hours;
+        public int Minutes => minutes;
         public int Seconds => seconds;
 
-        private int startSeconds;
-        private int startMinutes;
-        private int startHours;
+        private float lastSecondCountInFloat;
 
         public DockingTime(int hours, int minutes, int seconds)
         {
             this.hours = hours;
-            this.minutes = minutes + (hours * 60);
-            this.seconds = seconds + (minutes * 60) + (hours * 3600);
-
-            startHours = this.hours;
-            startMinutes = this.minutes;
-            startSeconds = this.seconds;
+            this.minutes = minutes;
+            this.seconds = seconds;
+            lastSecondCountInFloat = 0f;
         }
 
 
-        // public void SetTime(int hours, int minutes, int seconds)
-        // {
-        //     this.hours = hours;
-        //     this.minutes = minutes;
-        //     this.seconds = seconds;
-        // }
-
-
-        public void Tick(float secondsSinceLevelLoad)
+        public void Tick(float deltaTime)
         {
-            seconds = startSeconds + Mathf.FloorToInt(secondsSinceLevelLoad);
-            minutes = startMinutes + Mathf.FloorToInt(secondsSinceLevelLoad / 60f);
-            hours = startHours + Mathf.FloorToInt(secondsSinceLevelLoad / 3600f);
+            lastSecondCountInFloat += deltaTime;
+            while (lastSecondCountInFloat >= 1f)
+            {
+                lastSecondCountInFloat--;
+                seconds++;
+            }
 
-            Debug.Log($"hours: {hours}. minutes: {minutes}. seconds: {seconds}.");
+            if (seconds > 59)
+            {
+                seconds = 0;
+                minutes++;
+            }
+            if (minutes > 59)
+            {
+                minutes = 0;
+                hours++;
+            }
+            if (hours > 23)
+            {
+                hours = 0;
+            }
         }
-
-
-        // public int GetTimeInSeconds()
-        // {
-        //     return (hours * 3600) + (minutes * 60) + seconds;
-        // }
-
 
         public override string ToString()
         {
@@ -76,27 +71,40 @@ public class DockingTimeManager : MonoBehaviour
 
     void Start()
     {
-        int startHours = targetTime.Hours - targetDuration.Hours;
-        int startMinutes = targetTime.Minutes - targetDuration.Minutes;
-        int startSeconds = targetTime.Seconds - targetDuration.Seconds;
-        currentDockingTime = new(startHours, startMinutes, startSeconds);
-        // startDockingTime = new(startHours, startMinutes, startSeconds);
+        int startSeconds;
+        int startMinutes = 0;
+        int startHours = 0;
 
+        startSeconds = targetTime.Seconds - targetDuration.Seconds;
+        if (startSeconds < 0)
+        {
+            startSeconds += 60;
+            startMinutes--;
+        }
+
+        startMinutes += targetTime.Minutes - targetDuration.Minutes;
+        if (startMinutes < 0)
+        {
+            startMinutes += 60;
+            startHours--;
+        }
+
+        startHours += targetTime.Hours - targetDuration.Hours;
+        if (startHours < 0)
+        {
+            startHours += 24;
+        }
+
+        currentDockingTime = new(startHours, startMinutes, startSeconds);
+
+        currentTimeTmp.SetText("Ct: " + currentDockingTime.ToString());
         targetTimeTmp.SetText("Tt: " + targetTime.ToString());
     }
 
 
     void Update()
     {
-        // int intSeconds = Mathf.FloorToInt(Mathf.Repeat(Time.timeSinceLevelLoad + startDockingTime.Seconds, 60));
-        // int intMinutes = Mathf.FloorToInt(Mathf.Repeat((Time.timeSinceLevelLoad / 60) + startDockingTime.Minutes, 60));
-        // int intHours = Mathf.FloorToInt(Mathf.Repeat((Time.timeSinceLevelLoad / 3600) + startDockingTime.Hours, 24));
-
-        currentDockingTime.Tick(Time.timeSinceLevelLoad);
-
-        // currentDockingTime.SetTime(intHours, intMinutes, intSeconds);
-
+        currentDockingTime.Tick(Time.deltaTime);
         currentTimeTmp.SetText("Ct: " + currentDockingTime.ToString());
-
     }
 }

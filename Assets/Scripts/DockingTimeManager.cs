@@ -14,7 +14,6 @@ public class DockingTimeManager : MonoBehaviour
     private DockingTime currentDockingTime = new();
 
 
-
     [Serializable]
     public struct DockingTime
     {
@@ -97,14 +96,14 @@ public class DockingTimeManager : MonoBehaviour
 
         currentDockingTime = new(startHours, startMinutes, startSeconds);
 
-        currentTimeTmp.SetText("Ct: " + currentDockingTime.ToString());
-        targetTimeTmp.SetText("Tt: " + targetTime.ToString());
+        currentTimeTmp?.SetText("Ct: " + currentDockingTime.ToString());
+        targetTimeTmp?.SetText("Tt: " + targetTime.ToString());
     }
 
 
     void Update()
     {
         currentDockingTime.Tick(Time.deltaTime);
-        currentTimeTmp.SetText("Ct: " + currentDockingTime.ToString());
+        currentTimeTmp?.SetText("Ct: " + currentDockingTime.ToString());
     }
 }

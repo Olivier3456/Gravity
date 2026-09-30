@@ -30,7 +30,7 @@ public class ShipAudio : MonoBehaviour
 
     void Update()
     {
-        // // Obviously the ship audio class should not have to verity the ship status. Instead, the ship should have a property with each of his thruster current usage status.
+        // // Obviously the ship audio class should not have to verify the ship status. Instead, the ship should have a property with each of his thrusters current usage status.
         // if (ship.IsCrashed)
         // {
         //     return;

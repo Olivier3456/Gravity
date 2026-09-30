@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class ShipFuelManager : MonoBehaviour
 {
     [SerializeField] private bool hasUnlimitedFuel;
-    [SerializeField, Range(0f, 1000f)] private float fuelMaxAmount = 1000f;
-    [SerializeField, Range(0f, 1000f)] private float fuelStartAmount = 1000f;
+    [SerializeField, Range(0f, 10000f)] private float fuelMaxAmount = 1000f;
+    [SerializeField, Range(0f, 10000f)] private float fuelStartAmount = 1000f;
 
     [SerializeField, Tooltip("Unit per second at full power for each thruster.")] private float positionThrustersConsumption = 1f;
     [SerializeField, Tooltip("Unit per second at full power for each thruster.")] private float rotationThrustersConsumption = 1f;
@@ -72,8 +72,14 @@ public class ShipFuelManager : MonoBehaviour
         if (FuelCurrentAmount == 0f)
         {
             Debug.Log("Out of fuel!");
+            fuelConsumption = 0f;
         }
 
+        DisplayFuelConsumption(fuelConsumption);
+    }
+
+    private void DisplayFuelConsumption(float fuelConsumption)
+    {
         float fuelConsumptionDisplayFactor = 1000f;
         float fuelConsumptionDisplayed = fuelConsumption * fuelConsumptionDisplayFactor;
         fuelConsumptionTmp.SetText($"{fuelConsumptionDisplayed.ToString("00.00")} g/s");

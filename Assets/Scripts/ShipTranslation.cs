@@ -40,14 +40,17 @@ public class ShipTranslation : MonoBehaviour
     {
         if (ship.IsCrashed)
         {
+            currentForceNormalized = Vector3.zero;
             return;
         }
         if (ship.IsDocked)
         {
+            currentForceNormalized = Vector3.zero;
             return;
         }
         if (!shipFuelManager.HasFuel)
         {
+            currentForceNormalized = Vector3.zero;
             return;
         }
 

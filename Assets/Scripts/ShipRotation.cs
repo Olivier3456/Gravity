@@ -33,14 +33,17 @@ public class ShipRotation : MonoBehaviour
     {
         if (ship.IsCrashed)
         {
+            currentTorqueNormalized = Vector3.zero;
             return;
         }
         if (ship.IsDocked)
         {
+            currentTorqueNormalized = Vector3.zero;
             return;
         }
         if (!shipFuelManager.HasFuel)
         {
+            currentTorqueNormalized = Vector3.zero;
             return;
         }
 

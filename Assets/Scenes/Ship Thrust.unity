@@ -6943,7 +6943,7 @@ Transform:
   m_GameObject: {fileID: 1003585636}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3766171, y: 0.4018012, z: -0.18603793, w: 0.81369853}
-  m_LocalPosition: {x: -15.410446, y: 14.683853, z: -5.5750675}
+  m_LocalPosition: {x: -10.45, y: 7.32, z: -1.78}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7103,8 +7103,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShipFuelManager
   hasUnlimitedFuel: 0
-  fuelMaxAmount: 100
-  fuelStartAmount: 100
+  fuelMaxAmount: 10000
+  fuelStartAmount: 10000
   positionThrustersConsumption: 10
   rotationThrustersConsumption: 5
   shipTranslation: {fileID: 1003585647}

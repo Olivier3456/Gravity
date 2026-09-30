@@ -43,15 +43,6 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Rotation Mode",
-                    "type": "Button",
-                    "id": "9dd4e4b8-297e-4889-be5b-5fa243025b68",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Left Trigger Axis",
                     "type": "Value",
                     "id": "b3e52419-de04-4423-b213-ad442ab156b4",
@@ -135,17 +126,6 @@
                 },
                 {
                     "name": "",
-                    "id": "9ebba56c-9ce3-4496-b28e-bb06e2a404d1",
-                    "path": "<Gamepad>/{PrimaryAction}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation Mode",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "1ad2d5b9-618a-4311-a93c-afab255627f3",
                     "path": "<Gamepad>/leftTrigger",
                     "interactions": "",
@@ -216,17 +196,6 @@
             "bindings": [
                 {
                     "name": "",
-                    "id": "2c288865-42ef-4fb7-8114-42ceae7c08f9",
-                    "path": "<Gamepad>/buttonNorth",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "Rotation",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "9d12ebd1-400a-44ff-ab13-c6db914d0adf",
                     "path": "<Keyboard>/r",
                     "interactions": "",
@@ -238,8 +207,19 @@
                 },
                 {
                     "name": "",
-                    "id": "1caaac1d-c830-4f58-8c87-b23683635924",
-                    "path": "<Gamepad>/buttonSouth",
+                    "id": "a8f227dc-e9b7-418e-8230-679351167552",
+                    "path": "<Gamepad>/leftShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Rotation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c74df05c-24cb-40c9-b010-21f813c2542c",
+                    "path": "<Keyboard>/t",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -249,8 +229,8 @@
                 },
                 {
                     "name": "",
-                    "id": "c74df05c-24cb-40c9-b010-21f813c2542c",
-                    "path": "<Keyboard>/t",
+                    "id": "b4ca87c1-e538-4aa3-8711-c96ed2275628",
+                    "path": "<Gamepad>/rightShoulder",
                     "interactions": "",
                     "processors": "",
                     "groups": "",

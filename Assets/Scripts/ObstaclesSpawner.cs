@@ -7,6 +7,7 @@ public class ObstaclesSpawner : MonoBehaviour
     [SerializeField] private GameObject[] obstaclePrefabs;
     [SerializeField, Range(0f, 60f)] private float spawnRate = 5f;
 
+    [SerializeField] private Transform sphereCenter;
     [SerializeField] private float spawnSphereRadius = 50f;
     [SerializeField] private Vector2 obstaclesSpeed = new(10f, 20f);
 
@@ -35,7 +36,7 @@ public class ObstaclesSpawner : MonoBehaviour
         }
         spawnTimer = 0f;
 
-        Vector3 spawnPosition = transform.position + (Random.onUnitSphere * spawnSphereRadius);
+        Vector3 spawnPosition = sphereCenter.position + (Random.onUnitSphere * spawnSphereRadius);
         int index = Random.Range(0, obstaclePrefabs.Length - 1);
         if (obstaclePrefabs[index] == null)
         {
@@ -50,13 +51,18 @@ public class ObstaclesSpawner : MonoBehaviour
             return;
         }
 
-        Vector3 linearVelocity = new(Random.Range(0f, 1f),
-                                     Random.Range(0f, 1f),
-                                     Random.Range(0f, 1f));
-        linearVelocity = linearVelocity.normalized;
-        linearVelocity *= speed;
 
-        rigidbody.linearVelocity = linearVelocity;
+        Vector3 directionTosphereCenter = (sphereCenter.position - instantiatedObstacle.transform.position).normalized;
+
+        Vector3 randomVector3 = new((float)Random.Range(-1f, 1f),
+                                    (float)Random.Range(-1f, 1f),
+                                    (float)Random.Range(-1f, 1f));
+        Vector3 randomDirection = randomVector3.normalized;
+        float randomDirectionWeight = 0.25f;
+        Vector3 finalDirection = (directionTosphereCenter + (randomDirection * randomDirectionWeight)).normalized;
+
+        rigidbody.linearVelocity = finalDirection * speed;
+
         StartCoroutine(DestroyObstacleCoroutine(instantiatedObstacle, speed));
     }
 

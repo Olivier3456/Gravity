@@ -6596,6 +6596,7 @@ MonoBehaviour:
   - {fileID: 4585668889996735454, guid: faebded3a3bdb73408889df6ebfbbe8f, type: 3}
   - {fileID: 3827960962268051154, guid: 77d564897e905d147a41c5957386c0fd, type: 3}
   spawnRate: 1
+  sphereCenter: {fileID: 849496323}
   spawnSphereRadius: 50
   obstaclesSpeed: {x: 10, y: 20}
 --- !u!4 &849496323
@@ -6607,7 +6608,7 @@ Transform:
   m_GameObject: {fileID: 849496321}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.64768, y: 5.92854, z: -6.73787}
+  m_LocalPosition: {x: 0.64768, y: 2.43, z: -0.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

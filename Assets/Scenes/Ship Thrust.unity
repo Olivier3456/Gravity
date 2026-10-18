@@ -6562,6 +6562,57 @@ Mesh:
       - serializedVersion: 1
         m_IndexStart: 0
         m_IndexCount: 0
+--- !u!1 &849496321
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 849496323}
+  - component: {fileID: 849496322}
+  m_Layer: 0
+  m_Name: Obstacles Spawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &849496322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849496321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0f8b6fcdd353a854a823435f90c28611, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ObstaclesSpawner
+  obstaclePrefabs:
+  - {fileID: 5717373597938561386, guid: c9d407f870192914f86ff78fe11df8df, type: 3}
+  - {fileID: 4585668889996735454, guid: faebded3a3bdb73408889df6ebfbbe8f, type: 3}
+  - {fileID: 3827960962268051154, guid: 77d564897e905d147a41c5957386c0fd, type: 3}
+  spawnRate: 1
+  spawnSphereRadius: 50
+  obstaclesSpeed: {x: 10, y: 20}
+--- !u!4 &849496323
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 849496321}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.64768, y: 5.92854, z: -6.73787}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &910141881
 GameObject:
   m_ObjectHideFlags: 0
@@ -7036,7 +7087,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipRotation
   ship: {fileID: 1003585637}
   shipFuelManager: {fileID: 1003585650}
-  rotationThrustersForce: 50
+  rotationThrustersForce: {x: 50, y: 25, z: 50}
   maxAngularVelocity: 1.5
   responseGain: 500
 --- !u!114 &1003585647
@@ -7053,7 +7104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ShipTranslation
   ship: {fileID: 1003585637}
   shipFuelManager: {fileID: 1003585650}
-  positionThrustersForce: 50
+  positionThrustersForce: {x: 50, y: 50, z: 100}
   maxLinearVelocity: 10
   responseGainPerKilogram: 10
 --- !u!114 &1003585648
@@ -10115,3 +10166,4 @@ SceneRoots:
   - {fileID: 1578292686}
   - {fileID: 1206977368}
   - {fileID: 436196128}
+  - {fileID: 849496323}

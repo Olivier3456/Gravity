@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShipRotation : MonoBehaviour
@@ -5,7 +6,8 @@ public class ShipRotation : MonoBehaviour
     [SerializeField] private Ship ship;
     [SerializeField] private ShipFuelManager shipFuelManager;
     private IShipMovementInputs Inputs => ship.ShipInputs;
-    [SerializeField] private float rotationThrustersForce = 50f;
+    // [SerializeField] private float rotationThrustersForce = 50f;
+    [SerializeField] private Vector3 rotationThrustersForce = new(50f, 50f, 50f);
 
     // Angular velocity targeted at full stick deflection when the stabilizer is on, in rad/s.
     // Doubles as the rate governor's cap when it is off, so both modes top out identically.
@@ -26,7 +28,15 @@ public class ShipRotation : MonoBehaviour
     private Vector3 currentTorqueNormalized;
     public Vector3 CurrentTorqueNormalized => currentTorqueNormalized;
 
-    public float ThrustersForce => rotationThrustersForce;
+    // public float ThrustersForce => rotationThrustersForce;
+    public Vector3 ThrustersForce => rotationThrustersForce;
+
+
+    private void Start()
+    {
+        // See comment for LocalInputs: same change here.
+        rotationThrustersForce = new(rotationThrustersForce.x, rotationThrustersForce.z, rotationThrustersForce.y);
+    }
 
 
     void FixedUpdate()
@@ -76,7 +86,7 @@ public class ShipRotation : MonoBehaviour
                 continue;
             }
 
-            torque[i] = inputs[i] * rotationThrustersForce;
+            torque[i] = inputs[i] * rotationThrustersForce[i];
             currentTorqueNormalized[i] = inputs[i];
         }
 
@@ -95,8 +105,8 @@ public class ShipRotation : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             float deltaAngularVelocity = targetAngularVelocity[i] - localAngularVelocity[i];
-            torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -rotationThrustersForce, rotationThrustersForce);
-            currentTorqueNormalized[i] = torque[i] / rotationThrustersForce;
+            torque[i] = Mathf.Clamp(deltaAngularVelocity * responseGain, -rotationThrustersForce[i], rotationThrustersForce[i]);
+            currentTorqueNormalized[i] = torque[i] / rotationThrustersForce[i];
         }
 
         // CurrentTorque = torque;

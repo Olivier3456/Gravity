@@ -5,7 +5,8 @@ public class ShipTranslation : MonoBehaviour
     [SerializeField] private Ship ship;
     [SerializeField] private ShipFuelManager shipFuelManager;
     private IShipMovementInputs Inputs => ship.ShipInputs;
-    [SerializeField] private float positionThrustersForce = 100f;
+    // [SerializeField] private float positionThrustersForce = 100f;
+    [SerializeField] private Vector3 positionThrustersForce = new(50f, 50f, 50f);
 
     // Linear velocity targeted at full stick deflection when the stabilizer is on, in m/s.
     // Doubles as the speed governor's cap when it is off, so both modes top out identically.
@@ -31,7 +32,8 @@ public class ShipTranslation : MonoBehaviour
     private Vector3 currentForceNormalized;
     public Vector3 CurrentForceNormalized => currentForceNormalized;
 
-    public float ThrustersForce => positionThrustersForce;
+    // public float ThrustersForce => positionThrustersForce;
+    public Vector3 ThrustersForce => positionThrustersForce;
 
     public float CurrentSpeed => ship.Rigidbody.linearVelocity.magnitude;
 
@@ -85,7 +87,7 @@ public class ShipTranslation : MonoBehaviour
                 continue;
             }
 
-            force[i] = inputs[i] * positionThrustersForce;
+            force[i] = inputs[i] * positionThrustersForce[i];
             currentForceNormalized[i] = inputs[i];
         }
 
@@ -105,8 +107,8 @@ public class ShipTranslation : MonoBehaviour
         for (int i = 0; i < 3; i++)
         {
             float deltaVelocity = targetLocalVelocity[i] - localVelocity[i];
-            force[i] = Mathf.Clamp(deltaVelocity * gain, -positionThrustersForce, positionThrustersForce);
-            currentForceNormalized[i] = force[i] / positionThrustersForce;
+            force[i] = Mathf.Clamp(deltaVelocity * gain, -positionThrustersForce[i], positionThrustersForce[i]);
+            currentForceNormalized[i] = force[i] / positionThrustersForce[i];
         }
 
         // CurrentForce = force;
